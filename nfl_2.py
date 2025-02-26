@@ -78,8 +78,14 @@ def load_data(start_year=2020, end_year=2024):
     games = games[['season', 'week', 'home_team', 'away_team', 'home_score', 'away_score']]
     games['winner_team'] = games.apply(lambda row: row['home_team'] if row['home_score'] > row['away_score'] else row['away_team'], axis=1)
     games.dropna(subset=['winner_team'], inplace=True)
-    
+
     player_stats = nfl.import_weekly_data(list(range(start_year, end_year + 1)))
+
+    # 🔥 Conversion des colonnes non numériques en nombres (important pour éviter l'erreur)
+    for col in player_stats.columns:
+        if player_stats[col].dtype == "object":
+            player_stats[col] = pd.to_numeric(player_stats[col], errors="coerce")  # Convertir et remplacer les erreurs par NaN
+
     team_stats = player_stats.groupby(['season', 'week', 'recent_team']).mean().reset_index()
     return games, team_stats
 
