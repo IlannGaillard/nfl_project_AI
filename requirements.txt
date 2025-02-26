@@ -1,4 +1,4 @@
-nfl-data-py>=0.4.0  # (ou la dernière version trouvée)
+nfl-data-py==0.3.3
 pandas==1.5.3
 streamlit==1.42.2
 numpy==1.26.4
