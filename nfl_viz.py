@@ -165,6 +165,20 @@ y_train = train_df["winner"]
 X_test = test_df[features]
 y_test = test_df["winner"]
 
+# ✅ Remplacer les valeurs NaN par la moyenne de la colonne
+X_train.fillna(X_train.mean(), inplace=True)
+X_test.fillna(X_test.mean(), inplace=True)
+
+# Vérifier s'il reste des NaN (au cas où)
+print("📊 Vérification après remplissage des NaN :")
+print(f"X_train NaN : {X_train.isna().sum().sum()}")
+print(f"X_test NaN : {X_test.isna().sum().sum()}")
+
+# ⚠️ Si des NaN persistent, affiche les colonnes concernées
+if X_train.isna().sum().sum() > 0 or X_test.isna().sum().sum() > 0:
+    print("⚠️ Colonnes avec NaN dans X_train :", X_train.columns[X_train.isna().any()].tolist())
+    print("⚠️ Colonnes avec NaN dans X_test :", X_test.columns[X_test.isna().any()].tolist())
+
 # Vérifier les données avant l'entraînement
 print("📊 Vérification des données avant entraînement :")
 print("🔍 X_train (features d'entraînement) :")
